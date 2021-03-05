@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { FormattedMessage } from 'react-intl';
 
@@ -24,6 +24,7 @@ function NearbyPage({ location: { search: query } }) { //console.log of location
   const coordinates = parseQueryString('coordinates', query); //console.log of parseQueryString = find & from
 
     const [listImages, setImages] = React.useState();
+    const [activeImage, setActiveImage] = useState('');
 
   // this side effect will execute for every commit phase (occurs after render phase)
   React.useEffect(() => {
@@ -39,21 +40,36 @@ function NearbyPage({ location: { search: query } }) { //console.log of location
 
       // console.log(result);
       // console.log(listImages);
-      const flickrImgPath = (image) => `https://live.staticflickr.com/${image.server}/${image.id}_${image.secret}_s.jpg`;
+      const flickrImgPath = (image) => `https://live.staticflickr.com/${image.server}/${image.id}_${image.secret}_w.jpg`;
 
       const images = result.photos.photo.map((photo) => ({
         caption: photo.title,
         src: flickrImgPath(photo),
       }));
 
+      console.log('this are the images', images);
+
       setImages(images.map((img) => (
         <li key={img.src}>
-          <img src={img.src} alt={img.title} />
-        </li>
-      )));
+          <img src={img.src} alt={img.title}  className={img.title} onClick={e=>{
+              showImage(e, img.src);
+              }} style={{ width: 100 }}/>
+          </li>
+        )));
+      }
+      fetchData();
+    }, []);
+
+    const showImage = (e, imagesrc) => {
+      setActiveImage(imagesrc);
+      e.target.style.border='2px solid magenta';
     }
-    fetchData();
-  }, []);
+
+    if (!listImages)
+
+    return (
+      <h1>THere are no images</h1>
+      );
 
   return (
     <article style={{backgroundColor: "#ffffff"}}>
@@ -71,10 +87,14 @@ function NearbyPage({ location: { search: query } }) { //console.log of location
         <FormattedMessage {...messages.header} />
       </div>
       {coordinates}
+      {
+        activeImage &&
+        <img src={activeImage}/>
+        }
 
       <div class="container"
           style={{
-            width: 600,
+            width: 800,
             backgroundColor: "black",
             paddingLeft: 15,
             display: "block",
