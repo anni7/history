@@ -5,6 +5,7 @@ export const scope = 'app.containers.NearbyPage';
 export default defineMessages({
   header: {
     id: `${scope}.header`,
-    defaultMessage: 'This is the NearbyPage container!',
+    defaultMessage: 'Please Enjoy the Nearby Images',
   },
+
 });

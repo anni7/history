@@ -23,14 +23,14 @@ function parseQueryString(find, from) {
 function NearbyPage({ location: { search: query } }) { //console.log of location = http://192.168.0.14:3000/Nearby
   const coordinates = parseQueryString('coordinates', query); //console.log of parseQueryString = find & from
 
-    const [listImages, setImages] = React.useState();
+    const [listImages, setImages] = React.useState('ToDo');
 
   // this side effect will execute for every commit phase (occurs after render phase)
   React.useEffect(() => {
     async function fetchData() {
 
       const serviceRoot = 'https://www.flickr.com/services/rest/';
-      const baseQuery = `?method=flickr.photos.search&api_key=${credentials.flickr.api_key}&format=json&nojsoncallback=1`;
+      const baseQuery = `?method=flickr.photos.search&api_key=${credentials.flickr.api_key}&format=json&nojsoncallback=5`;
       const geoQuery = '&lat=49.282705&lon=-123.115326&radius=1';
       const serviceUrl = `${serviceRoot}${baseQuery}${geoQuery}`;
 
